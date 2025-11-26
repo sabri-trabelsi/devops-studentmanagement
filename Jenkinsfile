@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                git 'https://github.com/sabri-trabelsi/devops-studentmanagement.git'
+                url: 'https://github.com/sabri-trabelsi/devops-studentmanagement.git'
             }
         }
         stage('Build') {
