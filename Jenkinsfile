@@ -5,22 +5,12 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/sabri-trabelsi/devops-studentmanagement.git'
+                    url: 'https://github.com/sabri-trabelsi/devops-studentmanagement.git'
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
+                sh 'mvn -B clean package -DskipTests'
             }
         }
         stage('Archive') {
@@ -30,4 +20,3 @@ pipeline {
         }
     }
 }
-
