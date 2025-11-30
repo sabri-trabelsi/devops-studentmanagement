@@ -6,7 +6,7 @@ node {
 
     stage('Notify') {
         emailext(
-            to: 'trabelsisabri5@outlook.fr',   // ou ton Gmail si tu veux tester
+            to: 'trabelsisabri5@gmail.com', 
             subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: """Result: ${currentBuild.currentResult}
 Job: ${env.JOB_NAME}
