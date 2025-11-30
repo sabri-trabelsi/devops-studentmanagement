@@ -17,14 +17,14 @@ node {
     }
 
     stage('Notify') {
-        // Slack
+        // Slack notif
         slackSend(
             channel: '#jenkins',
             color: (currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'),
             message: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}"
         )
 
-        // Email
+        // Email notif
         emailext(
             to: 'trabelsisabri5@gmail.com',   // ou ton Outlook si tu préfères
             subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
