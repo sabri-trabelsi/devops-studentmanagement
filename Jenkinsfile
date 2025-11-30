@@ -1,38 +1,41 @@
-node {
-
-    stage('Checkout') {
-        echo '📥 Checkout source code'
-        checkout scm
+pipeline {
+    agent {
+        node {
+            label 'slave_build'
+        }
     }
 
-    stage('Build') {
-        echo '🚀 Build DevOps Student Management (Maven)'
-        sh 'mvn -version'
-        sh 'mvn clean package -DskipTests'
-    }
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Checkout source code'
+                checkout scm
+            }
+        }
 
-    stage('Test') {
-        echo '🧪 Running Maven tests'
-        sh 'mvn test'
-    }
+        stage('Build') {
+            steps {
+                echo '🚀 Build Maven on agent slave_01'
+                sh 'mvn -version'
+                sh 'mvn clean package -DskipTests'
+            }
+        }
 
-    stage('Notify') {
-        // Slack notif
-        slackSend(
-            channel: '#jenkins',
-            color: (currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'),
-            message: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}"
-        )
+        stage('Test') {
+            steps {
+                echo '🧪 Tests Maven'
+                sh 'mvn test'
+            }
+        }
 
-        // Email notif
-        emailext(
-            to: 'trabelsisabri5@gmail.com',   // ou ton Outlook si tu préfères
-            subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """Result: ${currentBuild.currentResult}
-Job: ${env.JOB_NAME}
-Build: #${env.BUILD_NUMBER}
-URL: ${env.BUILD_URL}
-"""
-        )
+        stage('Notify') {
+            steps {
+                slackSend(
+                    channel: '#jenkins',
+                    color: (currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'),
+                    message: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} (agent: slave_01)"
+                )
+            }
+        }
     }
 }
