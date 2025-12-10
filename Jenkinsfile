@@ -12,15 +12,15 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build Maven'
-                bat 'mvn -version'
-                bat 'mvn clean package -DskipTests'
+                sh 'mvn -version'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Tests Maven'
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
     }
@@ -31,6 +31,7 @@ pipeline {
                 channel: '#jenkins',
                 color: (currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'),
                 message: """Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+Agent: ${env.NODE_NAME}
 URL: ${env.BUILD_URL}
 Commit: ${env.GIT_COMMIT}"""
             )
