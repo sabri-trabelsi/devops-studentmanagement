@@ -1,21 +1,17 @@
 pipeline {
-    agent {
-        node {
-            label 'slave_build'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
-                echo '📥 Checkout source code'
+                echo 'Checkout source code'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo '🚀 Build Maven on agent slave_01'
+                echo 'Build Maven'
                 bat 'mvn -version'
                 bat 'mvn clean package -DskipTests'
             }
@@ -23,7 +19,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo '🧪 Tests Maven'
+                echo 'Tests Maven'
                 bat 'mvn test'
             }
         }
@@ -35,7 +31,6 @@ pipeline {
                 channel: '#jenkins',
                 color: (currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'),
                 message: """Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}
-Agent: slave_01
 URL: ${env.BUILD_URL}
 Commit: ${env.GIT_COMMIT}"""
             )
