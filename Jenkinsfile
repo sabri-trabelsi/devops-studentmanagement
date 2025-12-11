@@ -2,7 +2,13 @@ pipeline {
     agent any
 
     environment {
+        
         SONAR_LOGIN = credentials('sonarqube-token')
+    }
+
+    tools {
+        
+        maven 'Default Maven'
     }
 
     stages {
@@ -20,7 +26,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
+                withSonarQubeEnv('sonarqube') {  
                     sh '''
                         mvn sonar:sonar \
                           -Dsonar.projectKey=devops-studentmanagement \
