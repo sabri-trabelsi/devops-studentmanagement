@@ -55,14 +55,14 @@ pipeline {
     post {
         success {
             slackSend(
-                channel: '#devops-esprit',
+                channel: 'jenkins',
                 color: '#36a64f',
                 message: "SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
             )
         }
         failure {
             slackSend(
-                channel: '#devops-esprit',
+                channel: 'jenkins',
                 color: '#FF0000',
                 message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
             )
